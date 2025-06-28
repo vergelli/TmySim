@@ -1,4 +1,8 @@
 module Simulator
+
+using Rocket
+using ..Config
+
 @doc """
     Simulator
 
@@ -11,8 +15,6 @@ that emits sensor readings based on a `SensorConfig`.
 - `make_sensor_source`: Creates a reactive data source for a sensor.
 """
 
-    using Rocket
-    using ..Config
     export make_sensor_source
 
     @doc"""

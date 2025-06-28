@@ -1,4 +1,7 @@
 module Actors
+
+using Rocket
+
 @doc """
         Actors
 
@@ -11,7 +14,6 @@ module Actors
     # Exports
     - `CompletionActor`: An actor for handling observable events.
     """
-    using Rocket
 
     export CompletionActor
 
