@@ -1,5 +1,17 @@
 module Config
-export SensorConfig
+@doc """
+Config
+
+A module for defining sensor configuration structures.
+
+This module provides `SensorConfig`, a structure to hold 
+configuration parameters for a sensor simulation.
+
+# Exports
+- `SensorConfig`: A structure for sensor configuration.
+"""
+
+    export SensorConfig
 
     @doc"""
     Configuration module for sensor simulation.
