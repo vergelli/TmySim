@@ -1,4 +1,12 @@
 module TmySim
+@doc """
+    TmySim
+
+A module for orchestrating a sensor simulation using reactive programming with Rocket.jl.
+
+This module integrates `Config`, `Simulator`, and `Actors` to create 
+and run a simulation that generates and processes sensor data.
+"""
 
     include("../config/Config.jl")
     include("Simulator.jl")
