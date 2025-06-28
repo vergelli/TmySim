@@ -1,8 +1,18 @@
 module Simulator
+@doc """
+    Simulator
+
+A module for generating reactive sensor data streams using Rocket.jl.
+
+This module provides functionality to create an observable 
+that emits sensor readings based on a `SensorConfig`.
+
+# Exports
+- `make_sensor_source`: Creates a reactive data source for a sensor.
+"""
 
     using Rocket
     using ..Config
-
     export make_sensor_source
 
     @doc"""
