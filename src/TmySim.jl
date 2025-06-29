@@ -29,28 +29,45 @@ module TmySim
     @doc """
         run()
 
-    Runs the sensor simulation, printing values to the console and visualizing them in real-time.
+    Runs the sensor simulation, optionally printing values to the console and visualizing them in real-time, using configurations defined in `SimConfig`.
 
     # Effects
-    - Creates a sensor configuration with a 100 Hz frequency.
+    - Creates a `SimConfig` with a sensor configuration (160 Hz frequency), visualization window size, and printing option.
     - Generates a reactive data stream using `Stream.jl`.
-    - Subscribes a `CompletionActor` to print values to the console.
+    - Subscribes a `CompletionActor` to optionally print values to the console.
     - Subscribes a `PlotActor` to visualize the data with `GLMakie.jl`.
-    - Waits for the simulation to complete (after 100 emissions).
+    - Runs indefinitely until interrupted with Ctrl+C.
 
     # Examples
     ```julia
     julia> run()
-    # Prints sensor values and displays a real-time plot
+    # Displays a real-time plot with a 2-second window, no console printing
     ```
     """
     function run()
-        sensor = SensorConfig("temp", 160.0, 0.1, t -> 1 + sin(t))
-        stream = make_stream(sensor)
-        actor = Actors.CompletionActor{Float64}()
-        visualize_stream(stream, 3.0, sensor.freq)
-        subscribe!(get_observable(stream), actor)
+
+        sensor = SensorConfig("temp", 60.0, 0.1, t -> 1 + sin(t))
+        config = SimConfig(sensor, 10.0, false)
+        
+        stream = make_stream(config.sensor)
+        actor = Actors.CompletionActor{Float64}(config.print_values)
+        subscription = subscribe!(get_observable(stream), actor)
+        fig = visualize_stream(stream, config.window_size, config.sensor.freq)
+
+        try
+            while true
+                sleep(0.1)
+            end
+        catch e
+            if e isa InterruptException
+                unsubscribe!(subscription)
+                println("Simulación interrumpida")
+                put!(actor.completion_channel, true)
+                close(fig)
+            else
+                rethrow(e)
+            end
+        end
         take!(actor.completion_channel)
     end
 end
-
