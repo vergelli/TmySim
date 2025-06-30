@@ -19,7 +19,7 @@ julia --project=. -e 'using Pkg; Pkg.instantiate()'
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/vergelli/TmySim.git
    cd TmySim
    ```
 
